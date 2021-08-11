@@ -1,0 +1,50 @@
+services:
+  haiku:
+    image: haiku
+    container_name: haiku
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    networks:
+      - backend
+    ports:
+      - 5000
+    restart: always
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://haiku:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    links:
+      - redis
+
+  redis:
+    image: redis:7.2.4-alpine
+    container_name: redis
+    restart: always
+    networks:
+      - backend
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - cache:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  cache:
+    driver: local
+
+networks:
+  backend:
+    name: backend
+    external: true

@@ -1,0 +1,24 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic);
+blockquote{
+  text-align: center;
+  width:fit-content;
+  margin:30px auto;
+  font-family:Open Sans;
+  font-style:italic;
+  color: #555555;
+  padding:1.5em 1.2em 1.2em 1.2em;
+  border-left:8px solid #78C0A8 ;
+  line-height:1.6;
+  position: relative;
+  background:#EDEDED;
+}
+
+blockquote::before{
+  font-family:Arial;
+  content: "\201C";
+  color:#78C0A8;
+  font-size:3em;
+  position: absolute;
+  left: 10px;
+  top:-10px;
+}
